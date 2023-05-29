@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import PyQt5.QtWidgets as qtw
 import sys
 from uiListaProd import uiListaP
+import VerificarStock
+
 
 class listaProd(QMainWindow):
     def __init__(self, cont):
@@ -12,6 +14,10 @@ class listaProd(QMainWindow):
         self.ventana.setupUi(self)
         self.actualizarLista()
         self.lista = self.ventana.listaProductos
+        self.ventana.btnRevisarProd.clicked.connect(self.Ingresar)
+    
+    def actualizarNombre(self):
+        self.ventana.labelUsuarioEnLogin.setText(self.usuario[1])
     
     def actualizarLista(self):
         with open('Archivos de Datos/ListaArticulos.csv') as f:
@@ -49,4 +55,11 @@ class listaProd(QMainWindow):
                     break
                 i += 1
         self.ventana.labelUsuarioEnLogin.setText(self.usuario[1])
-            
+        
+        
+    def Ingresar(self):
+        self.VerificarStock = VerificarStock.Verificar(cont=self.cont)
+        self.VerificarStock.actualizar()
+        self.VerificarStock.show()
+        self.hide()    
+      
